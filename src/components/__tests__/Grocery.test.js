@@ -38,8 +38,6 @@ describe("Grocery page test cases", () => {
     // Querying
     const inputBoxes = screen.getAllByRole("textbox");
     //Assertion
-    console.log(inputBoxes.length);
-    // expect(inputBoxes).toBeInTheDocument();
     expect(inputBoxes.length).toBe(2);
   });
 });

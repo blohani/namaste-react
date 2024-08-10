@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React, { useContext } from "react";
-import {RestCard} from "./RestaurantCard";
+import { RestCard } from "./RestaurantCard";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import { withPromotedLabel } from "./RestaurantCard";
 
@@ -15,7 +15,7 @@ const Body = () => {
   const [filteredRes, setFilteredRes] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const RestCrdWithPromotedLabel = withPromotedLabel(RestCard);
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -29,26 +29,26 @@ const Body = () => {
     const restApiData =
       data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants; // Swiggy API
+
     setResList(restApiData);
     setFilteredRes(restApiData);
-    console.log("restApiData", restApiData);
+    // console.log("restApiData", restApiData);
   }
 
   const myOnlineStatus = useOnlineStatus();
-  const {loggedInUser, setUserName} = useContext(UserContext);
+  const { loggedInUser, setUserName } = useContext(UserContext);
 
-
-  if(!myOnlineStatus){
-    return <h1>Your internet connection is offline...</h1>
+  if (!myOnlineStatus) {
+    return <h1>Your internet connection is offline...</h1>;
   }
 
   if (resList.length === 0) {
     return <Shimmer />;
   }
 
-  const changeUsername =(event) =>{
+  const changeUsername = (event) => {
     setUserName(event.target.value);
-  }
+  };
 
   return (
     <div className="body">
@@ -57,13 +57,15 @@ const Body = () => {
           <input
             name="search"
             id="search"
+            data-testid="searchInput"
             className="m-2 p-2 border"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             type="text"
             placeholder="search..."
           />
-          <button className="bg-slate-300 p-2 rounded"
+          <button
+            className="bg-slate-300 p-2 rounded"
             onClick={() => {
               let searchedList = resList.filter(
                 (rest) =>
@@ -73,40 +75,46 @@ const Body = () => {
                     .includes(searchValue.toLowerCase()) // Swiggy API
               );
               setFilteredRes(searchedList);
-              console.log("searchedList", searchedList);
+              // console.log("searchedList", searchedList);
             }}
           >
             Search
           </button>
         </div>
         <div className="px-8 m-4">
-        <button
-          className="filter-btn bg-slate-300 p-1 rounded"
-          onClick={() => {
-            let filteredRest = resList.filter((rest) => {
-              // return rest.rating?.aggregate_rating < 4; // Zomato API
-              return rest.info?.avgRating > 4.3; // Swiggy API
-            });
-            setFilteredRes(filteredRest);
-            console.log("filteredRest", filteredRest);
-          }}
-        >
-          Filter Restaurants
-        </button>
-        <p className="m-2">
-        UserName: <input onChange={changeUsername} className="m-2 p-2 border" type="text" />
-        </p>
+          <button
+            className="filter-btn bg-slate-300 p-1 rounded"
+            onClick={() => {
+              let filteredRest = resList.filter((rest) => {
+                // return rest.rating?.aggregate_rating < 4; // Zomato API
+                return rest.info?.avgRating < 4.3; // Swiggy API
+              });
+              setFilteredRes(filteredRest);
+              // console.log("filteredRest", filteredRest);
+            }}
+          >
+            Filter Restaurants
+          </button>
+          <p className="m-2">
+            UserName:{" "}
+            <input
+              onChange={changeUsername}
+              className="m-2 p-2 border"
+              type="text"
+            />
+          </p>
         </div>
       </div>
       <div className="rest-container flex flex-wrap">
         {filteredRes.map((rest) => (
-           // eslint-disable-next-line react/jsx-key
-           <Link to={"/restaurant/" + rest?.info?.id}>
+          // eslint-disable-next-line react/jsx-key
+          <Link to={"/restaurant/" + rest?.info?.id}>
             {/* Restaurant Card with promoted label on it */}
-            {
-            rest?.info?.parentId == "61955" ? (<RestCrdWithPromotedLabel  key={rest?.info?.id} resData={rest} />) :
-          (<RestCard key={rest?.info?.id} resData={rest} />)
-            }
+            {rest?.info?.parentId == "61955" ? (
+              <RestCrdWithPromotedLabel key={rest?.info?.id} resData={rest} />
+            ) : (
+              <RestCard key={rest?.info?.id} resData={rest} />
+            )}
           </Link>
         ))}
       </div>

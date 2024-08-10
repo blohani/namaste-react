@@ -22,13 +22,24 @@ export const RestCard = (props) => {
     // </div>
 
     // ------For Swiggy API------
-    <div className="m-4 p-4 w-[200px] rounded-lg bg-slate-100 max-h-full hover:bg-slate-200">
+    <div
+      data-testid="resCard"
+      className="m-4 p-4 w-[200px] rounded-lg bg-slate-100 max-h-full hover:bg-slate-200"
+    >
       {info?.cloudinaryImageId ? (
-        <img alt={info?.name} className="w-40" src={CDN_URL + info?.cloudinaryImageId} />
+        <img
+          alt={info?.name}
+          className="w-40"
+          src={CDN_URL + info?.cloudinaryImageId}
+        />
       ) : (
-        <img alt={info?.name} className="w-40" src="https://www.logodesign.net/logo/smoking-burger-with-lettuce-3624ld.png" />
+        <img
+          alt={info?.name}
+          className="w-40"
+          src="https://www.logodesign.net/logo/smoking-burger-with-lettuce-3624ld.png"
+        />
       )}
-      
+
       <h2 className="font-bold py-4 text-lg">{info?.name}</h2>
       <p className="detail_type1">Cuisines - {info?.cuisines.join(", ")}</p>
       <p className="detail_type2">Rating - {info?.avgRating}</p>
@@ -41,11 +52,13 @@ export const RestCard = (props) => {
   );
 };
 
-export const withPromotedLabel = (RestCard) =>{
-  return (props)=>{
+export const withPromotedLabel = (RestCard) => {
+  return (props) => {
     return (
       <div>
-        <label className="absolute m-2 p-2 rounded-lg bg-black text-white">Promoted</label>
+        <label className="absolute m-2 p-2 rounded-lg bg-black text-white">
+          Promoted
+        </label>
         <RestCard {...props} />
       </div>
     );
